@@ -1,2 +1,4 @@
-# ca-test
-ConsumerAffairs Practical Test
+# ConsumerAffairs Practical Test - The Eye
+
+## How to run
+
