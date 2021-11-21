@@ -1,0 +1,47 @@
+version: "3.8"
+
+volumes:
+  postgres_data: {}
+
+services:
+  web:
+    container_name: the_eye-web
+    build:
+      context: .
+      dockerfile: compose/django/Dockerfile
+    # command: gunicorn --chdir the_eye the_eye.wsgi:application -b 0.0.0.0:8000
+    command: /bin/sh compose/django/start.sh
+    expose:
+      - 8000
+    depends_on:
+      - db
+    restart: on-failure
+    networks:
+      - vnetwork
+
+  db:
+    container_name: the_eye-db
+    image: postgres:13.5-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=the_eye
+    restart: on-failure
+    networks:
+      - vnetwork
+
+  # redis:
+  #   image: redis:6.2.6-alpine
+  #   container_name: the_eye-redis
+  #   ports:
+  #     - "6379:6379"
+  #   networks:
+  #     - vnetwork
+
+networks:
+  vnetwork:
+    driver: bridge
