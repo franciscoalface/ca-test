@@ -2,7 +2,6 @@ version: "3.8"
 
 volumes:
   postgres_data: {}
-  code:
 
 services:
 
@@ -12,7 +11,6 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      # - .:/code
       - ./compose/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - web
@@ -25,10 +23,25 @@ services:
       context: .
       dockerfile: compose/django/Dockerfile
     command: /bin/sh compose/django/start.sh
+    env_file:
+      - ./the_eye/.env
     expose:
       - 8000
     depends_on:
       - db
+    restart: on-failure
+    networks:
+      - vnetwork
+
+  celery:
+    container_name: the_eye-celery
+    build:
+      context: .
+      dockerfile: compose/django/Dockerfile
+    command: celery --workdir the_eye -A the_eye worker -l info
+    env_file:
+      - ./the_eye/.env
+    depends_on:
       - redis
     restart: on-failure
     networks:

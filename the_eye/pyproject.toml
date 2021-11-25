@@ -23,6 +23,8 @@ black = "^21.11b1"
 isort = "^5.10.1"
 bandit = "^1.7.1"
 safety = "^1.10.3"
+pytest-django = "^4.4.0"
+factory-boy = "^3.2.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
