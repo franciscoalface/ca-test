@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-1. Python 3.9.5
+1. Python 3.9.7
 2. Docker and Docker Compose
 
 ## How to run the application
